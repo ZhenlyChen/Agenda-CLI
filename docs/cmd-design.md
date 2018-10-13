@@ -46,9 +46,9 @@
 {
   "user": "string, 用户名",
   "password": "string, 密码",
-  "password_salt"："string, 密码加密盐"
+  "password_salt": "string, 密码加密盐",
   "email": "string, 用户邮箱",
-  "tel": "string, 用户电话",
+  "tel": "string, 用户电话"
 }
 ```
 
@@ -60,7 +60,7 @@
   "host_user": "string, 主持用户名",
   "participator": ["string, 会议参与者"],
   "start": "int64, 开始时间戳",
-  "end": "int64, 结束时间戳",
+  "end": "int64, 结束时间戳"
 }
 ```
 
@@ -69,7 +69,7 @@
 ```json
 {
   "user": "string, 当前登陆用户",
-  "expires": "int, 有效期时间戳",
+  "expires": "int, 有效期时间戳"
 }
 ```
 
@@ -82,7 +82,7 @@
     "time": "int, 时间戳",
     "command": "string, 命令",
     "output": "string, 输出数据"
-  }],
+  }]
 }
 ```
 
@@ -91,7 +91,7 @@
 ## 参数
 
 ```bash
-$ agenda command								#无参数
+$ agenda command
 $ agenda command -uhello
 $ agenda command -u hello
 $ agenda command -u=hello
