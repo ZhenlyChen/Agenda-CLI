@@ -1,6 +1,42 @@
 # Agenda-design
 
+## 目录
 
+* [Agenda\-design](#agenda-design)
+  * [目录](#%E7%9B%AE%E5%BD%95)
+  * [架构设计](#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1)
+    * [Command](#command)
+    * [Controller](#controller)
+    * [Service](#service)
+    * [Model](#model)
+    * [Log](#log)
+    * [Util](#util)
+  * [Model Scheme](#model-scheme)
+    * [User](#user)
+    * [Meeting](#meeting)
+    * [Status](#status)
+    * [Logs](#logs)
+  * [参数](#%E5%8F%82%E6%95%B0)
+  * [具体命令](#%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4)
+    * [用户](#%E7%94%A8%E6%88%B7)
+      * [用户登陆](#%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86)
+      * [用户登出](#%E7%94%A8%E6%88%B7%E7%99%BB%E5%87%BA)
+      * [用户注册](#%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C)
+      * [用户查询](#%E7%94%A8%E6%88%B7%E6%9F%A5%E8%AF%A2)
+      * [用户删除](#%E7%94%A8%E6%88%B7%E5%88%A0%E9%99%A4)
+    * [会议](#%E4%BC%9A%E8%AE%AE)
+      * [创建会议](#%E5%88%9B%E5%BB%BA%E4%BC%9A%E8%AE%AE)
+      * [增加会议参与者](#%E5%A2%9E%E5%8A%A0%E4%BC%9A%E8%AE%AE%E5%8F%82%E4%B8%8E%E8%80%85)
+      * [移除会议参与者](#%E7%A7%BB%E9%99%A4%E4%BC%9A%E8%AE%AE%E5%8F%82%E4%B8%8E%E8%80%85)
+      * [查询会议](#%E6%9F%A5%E8%AF%A2%E4%BC%9A%E8%AE%AE)
+      * [取消会议](#%E5%8F%96%E6%B6%88%E4%BC%9A%E8%AE%AE)
+      * [退出会议](#%E9%80%80%E5%87%BA%E4%BC%9A%E8%AE%AE)
+      * [清空会议](#%E6%B8%85%E7%A9%BA%E4%BC%9A%E8%AE%AE)
+    * [其他](#%E5%85%B6%E4%BB%96)
+      * [帮助](#%E5%B8%AE%E5%8A%A9)
+      * [查看版本信息](#%E6%9F%A5%E7%9C%8B%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 ## 架构设计
 
@@ -22,8 +58,6 @@
 
 数据层负责程序数据（用户、会议、状态）的管理，读取，修改并且持久化数据
 
-
-
 此外，还有一些通用辅助模块
 
 ### Log
@@ -34,9 +68,7 @@
 
 一些通用的辅助函数
 
-
-
-## Model
+## Model Scheme
 
 使用`json`保存数据
 
@@ -84,8 +116,6 @@
 2018/10/14 23:34:34 [ERROR] [Anonymous] List user, ERROR: Permission denied!
 ```
 
-
-
 ## 参数
 
 ```bash
@@ -100,8 +130,6 @@ $ agenda command --user=hello
 所有缩写默认取其全程的第一位字母
 
 以下均以最后一个样例的形式作为样例
-
-
 
 ## 具体命令
 
@@ -121,8 +149,6 @@ $ agenda command --user=hello
 ```bash
 $ agenda login --user=Admin --password=123456
 ```
-
-
 
 #### 用户登出
 
