@@ -10,7 +10,7 @@
 
 命令层负责将命令解析，将数据交给相应的控制函数
 
-### Controller 
+### Controller
 
 控制层负责检验参数的合法性，并且调用相应的服务，显示处理结果
 
@@ -76,14 +76,12 @@
 ### Logs
 
 ```json
-{
-  "user": "string, 用户名",
-  "command": [{
-    "time": "int, 时间戳",
-    "command": "string, 命令",
-    "output": "string, 输出数据"
-  }]
-}
+2018/10/14 23:33:33 [INFO] [ZhenlyChen] Login
+2018/10/14 23:33:36 [INFO] [ZhenlyChen] List user
+2018/10/14 23:33:44 [SUCCESS] [ZhenlyChen] Add meeting "Hello, world"
+2018/10/14 23:33:53 [ERROR] [ZhenlyChen] Delete meeting "Hllo, world", ERROR: Meeting is not exist!
+2018/10/14 23:34:02 [INFO] [ZhenlyChen] Logout
+2018/10/14 23:34:34 [ERROR] [Anonymous] List user, ERROR: Permission denied!
 ```
 
 
@@ -303,47 +301,11 @@ $ agenda meeting quit hello
 $ agenda meeting clear
 ```
 
-
-
-### 日志
-
-#### 查看日志
-
-命令： `log show`
-
-参数：
-
-- `start`：开始的时间，默认为当前时间
-- `end`：结束的时间，默认为10年后
-- `limit`：限制的显示数量
-
-功能：显示自己的操作日志
-
-```bash
-$ agenda log show --start=2018/10/13-13:33 --end=2018/10/13-14:44 --limit=100
-```
-
-
-
-#### 清空日志
-
-命令：`log clear`
-
-参数：无
-
-功能：清空当前用户的操作日志
-
-```bash
-$ agenda log clear
-```
-
-
-
 ### 其他
 
 #### 帮助
 
-命令：`help`/ `h`/ `?`
+命令：`help`/ `--help`/
 
 参数：无
 
@@ -366,4 +328,3 @@ $ agenda help
 ```bash
 $ agenda version
 ```
-
