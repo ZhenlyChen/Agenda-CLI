@@ -15,9 +15,9 @@ type UserInterface interface {
 }
 
 // Register 注册
-func (ctrl *ctrlManger) Register() {
+func (c *ctrlManger) Register() {
 	// 检验参数合法性
-	username, err := ctrl.cmd.Flags().GetString("user")
+	username, err := c.cmd.Flags().GetString("user")
 	if err != nil || username == "" {
 		fmt.Fprintln(os.Stderr, "Invalid user name")
 		util.Log().AddLog(util.LogError, "Register a user, Failed: Invalid user name")
@@ -32,6 +32,5 @@ func (ctrl *ctrlManger) Register() {
 	// 输出结果
 
 	// 记录日志
-	util.Log().AddLog(util.LogSuccess, "User \""+ username +"\" register.")
+	util.Log().AddLog(util.LogSuccess, "User \""+username+"\" register.")
 }
-
