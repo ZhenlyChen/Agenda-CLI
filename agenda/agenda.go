@@ -1,7 +1,0 @@
-package agenda
-
-
-func Run() {
-
-}
-

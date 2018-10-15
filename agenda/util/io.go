@@ -6,7 +6,7 @@ import (
 )
 
 // 检查文件是否存在并且如果不存在则创建并打开
-func CheckFile(filePath string) (error) {
+func CheckFile(filePath string) error {
 	dirPath := path.Dir(filePath)
 	// 判断文件夹是否存在
 	if _, err := os.Stat(dirPath); err != nil && os.IsNotExist(err) {

@@ -1,24 +1,25 @@
 package cmd
 
-
 import (
-	"fmt"
-
+	"github.com/ZhenlyChen/Agenda-CLI/agenda/controller"
 	"github.com/spf13/cobra"
 )
 
 // registerCmd represents the register command
 var registerCmd = &cobra.Command{
-	Use:   "register",
-	Short: "register a user",
-	Run: func(cmd *cobra.Command, args []string) {
-		username, _ := cmd.Flags().GetString("user")
-		fmt.Println("register called by " + username)
-		fmt.Println("register called")
-	},
+	Use:    "register",
+	Short:  "register a user",
+	Run:    wrapper(controller.User().Register),
 }
 
 func init() {
 	rootCmd.AddCommand(registerCmd)
-	registerCmd.Flags().StringP("user", "u", "Anonymous", "Help message for username")
+	registerCmd.Flags().StringP("user", "u", "", "Help message for username")
+}
+
+func wrapper(f func()) func(*cobra.Command, []string) {
+	return func(c *cobra.Command, a []string) {
+		controller.BindData(c, a)
+		f()
+	}
 }

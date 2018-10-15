@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
 	"os"
+
+	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
+	"github.com/ZhenlyChen/Agenda-CLI/agenda/util"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,6 +19,7 @@ var rootCmd = &cobra.Command{
 	Long:  `Agenda can help you manage your agenda`,
 }
 
+// Execute 程序执行入口
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -42,10 +45,22 @@ func initConfig() {
 		viper.AddConfigPath("./")
 		viper.SetConfigName(".agenda")
 	}
+	// 读取配置文件
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Fprintln(os.Stderr, "[Warning] Can't read config file in \""+viper.ConfigFileUsed()+"\", agenda will use default config.")
 	}
-	if err := model.InitDB(); err != nil {
+	// 初始化数据库
+	if err := model.InitDB(model.DataFile{
+		User:    viper.GetString("DataBase.User"),
+		Meeting: viper.GetString("DataBase.Meeting"),
+		Status:  viper.GetString("DataBase.Status"),
+	}); err != nil {
 		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// 初始化日志系统
+	if err := util.Log().Init(viper.GetString("LogFile")); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }

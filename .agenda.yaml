@@ -2,3 +2,4 @@ DataBase:
   User: ./data/user.json
   Meeting: ./data/meeting.json
   Status: ./data/status.json
+LogFile: ./logs/agenda.txt

@@ -19,6 +19,7 @@
   * [参数](#%E5%8F%82%E6%95%B0)
   * [具体命令](#%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4)
     * [用户](#%E7%94%A8%E6%88%B7)
+      * [用户状态](#%E7%94%A8%E6%88%B7%E7%8A%B6%E6%80%81)
       * [用户登陆](#%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86)
       * [用户登出](#%E7%94%A8%E6%88%B7%E7%99%BB%E5%87%BA)
       * [用户注册](#%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C)
@@ -76,7 +77,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 ```json
 {
-  "user": "string, 用户名",
+  "name": "string, 用户名",
   "password": "string, 密码",
   "password_salt": "string, 密码加密盐",
   "email": "string, 用户邮箱",
@@ -89,7 +90,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 ```json
 {
   "title": "string, 会议标题",
-  "host_user": "string, 主持用户名",
+  "presenter": "string, 主持用户名",
   "participator": ["string, 会议参与者"],
   "start": "int64, 开始时间戳",
   "end": "int64, 结束时间戳"
@@ -135,6 +136,20 @@ $ agenda command --user=hello
 
 ### 用户
 
+#### 用户状态
+
+命令： `status`
+
+参数：无
+
+功能：查看当前已登录的用户
+
+```bash
+$ agenda status
+```
+
+
+
 #### 用户登陆
 
 命令：`login`
@@ -149,6 +164,8 @@ $ agenda command --user=hello
 ```bash
 $ agenda login --user=Admin --password=123456
 ```
+
+
 
 #### 用户登出
 
