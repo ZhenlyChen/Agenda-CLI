@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ZhenlyChen/Agenda-CLI/agenda/controller"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/util"
 
@@ -24,6 +25,13 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+}
+
+func wrapper(f func()) func(*cobra.Command, []string) {
+	return func(c *cobra.Command, a []string) {
+		controller.BindData(c, a)
+		f()
 	}
 }
 

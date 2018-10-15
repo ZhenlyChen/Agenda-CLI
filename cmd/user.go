@@ -7,19 +7,12 @@ import (
 
 // registerCmd represents the register command
 var registerCmd = &cobra.Command{
-	Use:    "register",
-	Short:  "register a user",
-	Run:    wrapper(controller.User().Register),
+	Use:   "register",
+	Short: "register a user",
+	Run:   wrapper(controller.User().Register),
 }
 
 func init() {
 	rootCmd.AddCommand(registerCmd)
 	registerCmd.Flags().StringP("user", "u", "", "Help message for username")
-}
-
-func wrapper(f func()) func(*cobra.Command, []string) {
-	return func(c *cobra.Command, a []string) {
-		controller.BindData(c, a)
-		f()
-	}
 }
