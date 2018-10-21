@@ -8,14 +8,24 @@ import (
 
 var l *logTool
 
+// 日志类型
 const (
 	LogInfo    = "INFO"
 	LogWarning = "WARNING"
 	LogSuccess = "SUCCESS"
 	LogError   = "ERROR"
+	LogInput   = "INPUT"
 )
 
-func Log() *logTool { return l }
+// Log 日志
+func Log() LogTool { return l }
+
+// LogTool 日志工具
+type LogTool interface {
+	Init(filePath string) error
+	SetUserName(name string)
+	AddLog(logType, content string)
+}
 
 type logTool struct {
 	FilePath string
