@@ -47,6 +47,10 @@ func (l *logTool) Init(filePath string) error {
 }
 
 func (l *logTool) SetUserName(name string) {
+	if name == "" {
+		l.UserName = "Anonymous"
+		return
+	}
 	l.UserName = name
 }
 

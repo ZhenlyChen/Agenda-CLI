@@ -12,7 +12,16 @@ var zhenlyChenCmd = &cobra.Command{
 	Run:   wrapper(controller.Other().Zhenlychen),
 }
 
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "show agenda's version",
+	Run:   wrapper(controller.Other().Version),
+}
+
 func init() {
 	rootCmd.AddCommand(zhenlyChenCmd)
 	zhenlyChenCmd.Flags().StringP("name", "n", "", "your name")
+
+	rootCmd.AddCommand(versionCmd)
 }

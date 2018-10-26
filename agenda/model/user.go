@@ -28,3 +28,13 @@ func (m *UserModel) Add(data UserData) error {
 	m.Data.Users = append(m.Data.Users, data)
 	return m.save(m.Data)
 }
+
+// Exist 判断用户是否存在
+func (m *UserModel) Exist(name string) bool {
+	for _, u := range m.Data.Users {
+		if u.Name == name {
+			return true
+		}
+	}
+	return false
+}

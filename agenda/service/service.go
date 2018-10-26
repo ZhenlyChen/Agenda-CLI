@@ -7,6 +7,9 @@ var s *service
 // User 获取用户服务层
 func User() UserInterface { return s }
 
+// Status 获取状态服务层
+func Status() StatusInterface { return s }
+
 type service struct {
 	userModel    *model.UserModel
 	meetingModel *model.MeetingModel
