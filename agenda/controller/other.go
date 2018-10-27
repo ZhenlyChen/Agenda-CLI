@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"github.com/ZhenlyChen/Agenda-CLI/agenda/service"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/util"
 )
 
@@ -17,8 +16,7 @@ func (c *ctrlManger) Zhenlychen() {
 	if err != nil {
 		util.PrintError("Invalid name!")
 	}
-	service.Status().SetUser(name)
-	util.PrintInfo("Your name is " + service.Status().GetLoginUser())
+	util.PrintInfo("Your name is " + name)
 }
 
 // Version 查看版本信息

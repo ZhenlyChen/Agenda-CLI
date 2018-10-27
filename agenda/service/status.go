@@ -8,7 +8,7 @@ import (
 // UserInterface 用户服务接口
 type StatusInterface interface {
 	GetLoginUser() string
-	SetUser(name string)
+	SetStatus(name string)
 	ClearStatus()
 }
 
@@ -38,9 +38,9 @@ func (s *service) GetLoginUser() string {
 }
 
 // SetUser 设置已登录用户
-func (s *service) SetUser(name string) {
-	s.statusModel.SetUser(name)
-	util.Log().SetUserName(name)
+func (s *service) SetStatus(user string) {
+	s.statusModel.SetUser(user)
+	util.Log().SetUserName(user)
 }
 
 // ClearStatus 清除登陆状态

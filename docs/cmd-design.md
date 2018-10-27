@@ -138,14 +138,14 @@ $ agenda command --user=hello
 
 #### 用户状态
 
-命令： `status`
+命令： `user status`
 
 参数：无
 
 功能：查看当前已登录的用户
 
 ```bash
-$ agenda status
+$ agenda user status
 ```
 
 

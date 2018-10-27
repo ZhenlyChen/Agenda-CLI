@@ -6,16 +6,44 @@ import (
 )
 
 // registerCmd represents the register command
+var userCmd = &cobra.Command{
+	Use: "user",
+	Aliases: []string{"u"},
+	Short: "User Command",
+}
+
 var registerCmd = &cobra.Command{
 	Use:   "register",
+	Aliases: []string{"r"},
 	Short: "register a user",
 	Run:   wrapper(controller.User().Register),
 }
 
+var loginCmd = &cobra.Command{
+	Use:   "login",
+	Short: "register a user",
+	Run:   wrapper(controller.User().Login),
+}
+
+var statusCmd = &cobra.Command{
+	Use: "status",
+	Short: "View the currently logged in user",
+	Run: wrapper(controller.User().Status),
+}
+
 func init() {
-	rootCmd.AddCommand(registerCmd)
+	// 登陆命令
+	loginCmd.Flags().StringP("user", "u", "", "username")
+	loginCmd.Flags().StringP("password", "p", "", "user password")
+	rootCmd.AddCommand(loginCmd)
+	// 用户类命令
+	rootCmd.AddCommand(userCmd)
+	// 注册命令
 	registerCmd.Flags().StringP("user", "u", "", "username")
 	registerCmd.Flags().StringP("password", "p", "", "user password")
 	registerCmd.Flags().StringP("email", "e", "", "user email")
 	registerCmd.Flags().StringP("tel", "t", "", "user telephone")
+	userCmd.AddCommand(registerCmd)
+	// 状态
+	userCmd.AddCommand(statusCmd)
 }
