@@ -101,7 +101,8 @@ func (c *ctrlManger) Status() {
 
 // Logout 退出登陆
 func (c *ctrlManger) Logout() {
-	// TODO
+	service.Status().ClearStatus()
+	util.PrintInfo("sign out.")
 }
 
 // List 列出所有用户

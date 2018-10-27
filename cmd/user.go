@@ -25,6 +25,13 @@ var loginCmd = &cobra.Command{
 	Run:   wrapper(controller.User().Login),
 }
 
+var logoutCmd  = &cobra.Command{
+	Use:   "logout",
+	Aliases: []string{"exit", "quit"},
+	Short: "Log out",
+	Run:   wrapper(controller.User().Logout),
+}
+
 var statusCmd = &cobra.Command{
 	Use: "status",
 	Short: "View the currently logged in user",
@@ -36,6 +43,10 @@ func init() {
 	loginCmd.Flags().StringP("user", "u", "", "username")
 	loginCmd.Flags().StringP("password", "p", "", "user password")
 	rootCmd.AddCommand(loginCmd)
+	// 退出登陆
+	rootCmd.AddCommand(logoutCmd)
+	// 状态
+	rootCmd.AddCommand(statusCmd)
 	// 用户类命令
 	rootCmd.AddCommand(userCmd)
 	// 注册命令
@@ -44,6 +55,4 @@ func init() {
 	registerCmd.Flags().StringP("email", "e", "", "user email")
 	registerCmd.Flags().StringP("tel", "t", "", "user telephone")
 	userCmd.AddCommand(registerCmd)
-	// 状态
-	userCmd.AddCommand(statusCmd)
 }
