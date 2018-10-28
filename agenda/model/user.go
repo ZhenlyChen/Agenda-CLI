@@ -54,3 +54,8 @@ func (m *UserModel) Exist(name string) bool {
 	}
 	return false
 }
+
+// GetAllUsers 获取所有用户
+func (m *UserModel) GetAllUsers() []UserData {
+	return m.Data.Users
+}

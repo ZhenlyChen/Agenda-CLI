@@ -34,10 +34,10 @@ func (c *ctrlManger) Register() {
 	}
 
 	email, _ := c.cmd.Flags().GetString("email")
-	if email != "" && !regexp.MustCompile("^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,8})$").Match([]byte(email)) {
-		util.PrintError("Register Failed! Invalid email.")
-		return
-	}
+	//if email != "" && !regexp.MustCompile("^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,8})$").Match([]byte(email)) {
+	//	util.PrintError("Register Failed! Invalid email.")
+	//	return
+	//}
 
 	tel, _ := c.cmd.Flags().GetString("tel")
 	if tel != "" && !regexp.MustCompile("^[0-9-+]{3,18}$").Match([]byte(tel)) {
@@ -107,7 +107,11 @@ func (c *ctrlManger) Logout() {
 
 // List 列出所有用户
 func (c *ctrlManger) List() {
-	// TODO
+	users := model.User().GetAllUsers()
+	spilt := "\t"
+	for _, u := range users{
+		util.PrintInfo(u.Name + spilt + u.Email + spilt + u.Tel)
+	}
 }
 
 // Delete 删除当前账户
