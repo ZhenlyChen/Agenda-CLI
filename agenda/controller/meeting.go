@@ -6,7 +6,6 @@ import (
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/util"
 	"regexp"
 	"strings"
-	"time"
 )
 
 // MeetingInterface 会议控制接口
@@ -24,33 +23,41 @@ func (c *ctrlManger) Create(){
 	title, err := c.cmd.Flags().GetString("title")
 	if err != nil || title == "" {
 		util.PrintError("Create Meeting Failed! Invalid title .")
+		return
 	}
 
 	participator, err := c.cmd.Flags().GetString("participator")
 	if err != nil || participator == "" {
 		util.PrintError("Create Meeting Failed! Invalid participator .")
+		return
 	}
 
 	start, err := c.cmd.Flags().GetString("start")
 	if err != nil || !regexp.MustCompile("^[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}$").Match([]byte(start)) {
 		util.PrintError("Create Meeting Failed! Invalid start time .")
+		return
 	}
 
 	end, err := c.cmd.Flags().GetString("end")
 	if err != nil || !regexp.MustCompile("^[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}$").Match([]byte(end)) {
 		util.PrintError("Create Meeting Failed! Invalid end time .")
+		return
+	}
+	err = service.Meeting().Create(model.MeetingData{
+				Title: title,
+				Presenter: service.Status().GetLoginUser(),
+				Participator: strings.Split(participator, "+"),
+			}, start, end)
+	if err == nil{
+		util.PrintSuccess("Create Meeting [" + title + "] Success! .")
+	}else if err == service.ErrorTimeOutOfRange{
+		util.PrintError("Create Meeting Failed! Start or End time out of range .")
+	}else if err == service.ErrorTimeEndTimeEarly{
+		util.PrintError("Create Meeting Failed! End time is earlier than Start time .")
+	}else {
+		util.PrintError("Create Meeting Failed!")
 	}
 
-	startTime, _ := time.Parse(start, "2006/01/02-15:04")
-	endTime, _ := time.Parse(end, "2006/01/02-15:04")
-
-	err := service.Meeting().Create(model.MeetingData{
-		Title: title,
-		Presenter: service.Status().GetLoginUser(),
-		Participator: strings.Split(participator, "+"),
-		Start: startTime.Unix(),
-		End: endTime.Unix(),
-	})
 }
 
 // AddParticipator 添加会议参与者
