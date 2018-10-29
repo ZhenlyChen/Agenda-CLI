@@ -24,21 +24,28 @@ var meetingAddParticipator = &cobra.Command{
 }
 
 var meetingRemoveParticipator = &cobra.Command{
-	Use: "add",
-	Short: "Add participator",
+	Use: "remove",
+	Short: "Remove participator",
 	Run: wrapper(controller.Meeting().RemoveParticipator),
 }
 
 var meetingQuery = &cobra.Command{
-	Use: "add",
+	Use: "query",
 	Short: "Add participator",
+	Aliases: []string{ "search"},
 	Run: wrapper(controller.Meeting().Query),
 }
 
 var meetingDelete = &cobra.Command{
-	Use: "add",
-	Short: "Add participator",
+	Use: "delete",
+	Short: "Delete Meeting by title",
 	Run: wrapper(controller.Meeting().MeetingDelete),
+}
+
+var meetingQuit = &cobra.Command{
+	Use: "quit",
+	Short: "Quit Meeting by title",
+	Run: wrapper(controller.Meeting().MeetingQuit),
 }
 
 var meetingClear = &cobra.Command{
@@ -57,4 +64,12 @@ func init() {
 	meetingCreate.Flags().StringP("start","s","","Meeting's start time")
 	meetingCreate.Flags().StringP("end","e","","Meeting's end time")
 	meetingCmd.AddCommand(meetingCreate)
+	// 添加参与者
+	meetingAddParticipator.Flags().StringP("title","t","","Meeting's title")
+	meetingAddParticipator.Flags().StringP("participator","p","","Meeting's participator")
+	meetingCmd.AddCommand(meetingAddParticipator)
+	// 查询会议
+	meetingQuery.Flags().StringP("start","s","","Query start time")
+	meetingQuery.Flags().StringP("end","e","","Query end time")
+	meetingCmd.AddCommand(meetingQuery)
 }
