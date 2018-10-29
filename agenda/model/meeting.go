@@ -21,3 +21,9 @@ type MeetingData struct {
 func (m *MeetingModel) GetData() interface{} {
 	return &m.Data
 }
+
+// Add 添加一个会议
+func (m *MeetingModel) Add(data MeetingData) interface{} {
+	m.Data.Meetings = append(m.Data.Meetings, data)
+	return &m.Data
+}

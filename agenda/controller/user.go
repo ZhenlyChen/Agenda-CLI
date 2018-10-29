@@ -108,9 +108,9 @@ func (c *ctrlManger) Logout() {
 // List 列出所有用户
 func (c *ctrlManger) List() {
 	users := model.User().GetAllUsers()
-	spilt := "\t"
+	spilt := "    "
 	for _, u := range users{
-		util.PrintInfo(u.Name + spilt + u.Email + spilt + u.Tel)
+		util.PrintInfo("Username: " + u.Name + spilt + "Email: " + u.Email + spilt + "Tel: " + u.Tel)
 	}
 }
 
