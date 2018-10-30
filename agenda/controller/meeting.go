@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/service"
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/util"
@@ -28,19 +29,16 @@ func (c *ctrlManger) Create(){
 		util.PrintError("Create Meeting Failed! Invalid title .")
 		return
 	}
-
 	participator, err := c.cmd.Flags().GetString("participator")
 	if err != nil || participator == "" {
 		util.PrintError("Create Meeting Failed! Invalid participator .")
 		return
 	}
-
 	start, err := c.cmd.Flags().GetString("start")
 	if err != nil || !regexp.MustCompile("^[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}$").Match([]byte(start)) {
 		util.PrintError("Create Meeting Failed! Invalid start time .")
 		return
 	}
-
 	end, err := c.cmd.Flags().GetString("end")
 	if err != nil || !regexp.MustCompile("^[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}$").Match([]byte(end)) {
 		util.PrintError("Create Meeting Failed! Invalid end time .")
@@ -48,20 +46,24 @@ func (c *ctrlManger) Create(){
 	}
 
 	// 调用service服务
-	err = service.Meeting().Create(model.MeetingData{
+	p, err := service.Meeting().Create(model.MeetingData{
 				Title: title,
 				Presenter: service.Status().GetLoginUser(),
 				Participator: strings.Split(participator, "+"),
 			}, start, end)
 	if err == nil{
 		util.PrintSuccess("Create Meeting [" + title + "] Success! .")
-	}else if err == service.ErrorTimeOutOfRange{
+	} else if err == service.ErrorTimeOutOfRange{
 		util.PrintError("Create Meeting Failed! Start or End time out of range .")
-	}else if err == service.ErrorTimeEndTimeEarly{
+	} else if err == service.ErrorTimeEndTimeEarly{
 		util.PrintError("Create Meeting Failed! End time is earlier than Start time .")
-	}else if err == service.ErrorMeetingDuplicateTitle {
+	} else if err == service.ErrorMeetingDuplicateTitle {
 		util.PrintError("Create Meeting Failed! The Meeting title already exists.")
-	}else {
+	} else if err == service.ErrorMeetingOverlap {
+		util.PrintError("Create Meeting Failed! [" + p + "] has meeting in this period . ")
+	} else if err == service.ErrorUserNotExist {
+		util.PrintError("Create Meeting Failed! No such user [" + p + "] . ")
+	} else {
 		util.PrintError("Create Meeting Failed!")
 	}
 
@@ -85,7 +87,7 @@ func (c *ctrlManger) AddParticipator(){
 	// 调用service服务
 	err = service.Meeting().AddParticipator(title,  strings.Split(participator, "+"))
 	if err == nil{
-		util.PrintSuccess("Create Meeting [" + title + "] Success! .")
+		util.PrintSuccess("Add Participator Success! .")
 	} else if err == service.ErrorMeetingNotExist{
 		util.PrintError("Add Participator Failed! Not such Meeting [" + title + "] .")
 	} else if err == service.ErrorParticipatorExist{
@@ -118,10 +120,16 @@ func (c *ctrlManger) Query(){
 	// 调用service服务
 	data, err := service.Meeting().Query(service.Status().GetLoginUser(),start, end)
 	if err == nil{
-		util.PrintError("Query Meeting Success!")
+		util.PrintSuccess("Query Meeting Success!")
 		spilt := "    "
-		for _, u := range data{
-			util.PrintError("Title: " + u.Title + spilt + "Start: " + time.Unix(u.Start, 0).String() + spilt + "End: " + time.Unix(u.End, 0).String())
+		for i, u := range data{
+			util.PrintInfo("Meeting" + fmt.Sprintf("%v", i + 1) + ":" )
+			util.PrintInfo("Title: " + u.Title + spilt + "Start: " + time.Unix(u.Start, 0).String() + spilt + "End: " + time.Unix(u.End, 0).String())
+			info := string("Participator: ")
+			for _, p := range u.Participator {
+				info += p + " "
+			}
+			util.PrintInfo(info)
 		}
 	} else if err == service.ErrorTimeOutOfRange{
 		util.PrintError("Query Meeting Failed! Start or End time out of range .")

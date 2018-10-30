@@ -7,13 +7,14 @@ import (
 )
 
 type MeetingInterface interface {
-	Create(data model.MeetingData, start string, end string) error
+	Create(data model.MeetingData, start string, end string)(string, error)
 	AddParticipator(title string, participator []string) error
 	Query(username string,start string, end string) ([]model.MeetingData, error)
 }
 
 var(
 	ErrorMeetingNotExist = errors.New("Meeting_Not_Exist")
+	ErrorUserNotExist= errors.New("User_Not_Exist")
 	ErrorTimeOutOfRange = errors.New("Out_Of_Range")
 	ErrorTimeEndTimeEarly = errors.New("End_Time_Early")
 	ErrorMeetingDuplicateTitle = errors.New("duplicate_Title")
@@ -39,19 +40,33 @@ func checkTime(start string, end string) (int64, int64, error) {
 }
 
 // 创建会议
-func (s *service) Create(data model.MeetingData, start string, end string) error{
+func (s *service) Create(data model.MeetingData, start string, end string) (string, error){
+	// 检测时间合法性和冲突
 	startTime, endTime, err := checkTime(start, end)
 	if err != nil {
-		return err
+		return "", err
 	}
 	if s.meetingModel.Exist(data.Title) {
-		return ErrorMeetingDuplicateTitle
+		return "", ErrorMeetingDuplicateTitle
 	}
-
-	data.Start = startTime
-	data.End = endTime
+	data.Start, data.End = startTime, endTime
+	// 检测参与者是否为有效用户
+	for _, u := range data.Participator{
+		if !s.userModel.Exist(u) {
+			return u, ErrorUserNotExist
+		}
+	}
+	// 检测参与者和创建者的时间冲突
+	for _, u := range append(data.Participator, Status().GetLoginUser()) {
+		meetings := s.meetingModel.GetMeetingByName(u)
+		for _, m := range meetings {
+			if !(m.End <= data.Start || m.Start >= data.End){
+				return u, ErrorMeetingOverlap
+			}
+		}
+	}
 	s.meetingModel.Add(data)
-	return nil
+	return "", nil
 }
 
 // 添加参与者
