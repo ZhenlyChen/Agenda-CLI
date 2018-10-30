@@ -66,8 +66,12 @@ func init() {
 	meetingCmd.AddCommand(meetingCreate)
 	// 添加参与者
 	meetingAddParticipator.Flags().StringP("title","t","","Meeting's title")
-	meetingAddParticipator.Flags().StringP("participator","p","","Meeting's participator")
+	meetingAddParticipator.Flags().StringP("participator","p","","Participator to add")
 	meetingCmd.AddCommand(meetingAddParticipator)
+	// 删除参与者
+	meetingRemoveParticipator.Flags().StringP("title","t","","Meeting's title")
+	meetingRemoveParticipator.Flags().StringP("participator","p","","Participator to remove")
+	meetingCmd.AddCommand(meetingRemoveParticipator)
 	// 查询会议
 	meetingQuery.Flags().StringP("start","s","","Query start time")
 	meetingQuery.Flags().StringP("end","e","","Query end time")
@@ -75,6 +79,9 @@ func init() {
 	// 删除会议
 	meetingDelete.Flags().StringP("title","t","","Meeting's title")
 	meetingCmd.AddCommand(meetingDelete)
+	// 退出会议
+	meetingQuit.Flags().StringP("title","t","","Meeting's title")
+	meetingCmd.AddCommand(meetingQuit)
 	// 清空会议
 	meetingCmd.AddCommand(meetingClear)
 }

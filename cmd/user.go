@@ -44,6 +44,12 @@ var listCmd = &cobra.Command{
 	Run: wrapper(controller.User().List),
 }
 
+var DeleteCmd = &cobra.Command{
+	Use: "list",
+	Short: "List all users",
+	Run: wrapper(controller.User().Delete),
+}
+
 func init() {
 	// 登陆命令
 	loginCmd.Flags().StringP("user", "u", "", "username")
@@ -63,4 +69,6 @@ func init() {
 	userCmd.AddCommand(registerCmd)
 	// 查询命令
 	userCmd.AddCommand(listCmd)
+	// 删除命令
+	userCmd.AddCommand(DeleteCmd)
 }

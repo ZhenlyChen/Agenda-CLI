@@ -116,5 +116,11 @@ func (c *ctrlManger) List() {
 
 // Delete 删除当前账户
 func (c *ctrlManger) Delete() {
-	// TODO
+	err := service.User().UserDelete()
+	if err == nil {
+		util.PrintError("Delete User Success!")
+		service.Status().ClearStatus()
+	} else{
+		util.PrintError("Delete User Failed!")
+	}
 }

@@ -63,7 +63,9 @@ func (c *ctrlManger) Create(){
 		util.PrintError("Create Meeting Failed! [" + p + "] has meeting in this period . ")
 	} else if err == service.ErrorUserNotExist {
 		util.PrintError("Create Meeting Failed! No such user [" + p + "] . ")
-	} else {
+	} else if err == service.ErrorBothPresenterAndParticipator {
+		util.PrintError("Create Meeting Failed! You can't be a participator . ")
+	}else {
 		util.PrintError("Create Meeting Failed!")
 	}
 
@@ -101,7 +103,31 @@ func (c *ctrlManger) AddParticipator(){
 
 // RemoveParticipator 删除会议参与者
 func (c *ctrlManger) RemoveParticipator(){
-	//TODO
+	// 获取参数
+	title, err := c.cmd.Flags().GetString("title")
+	if err != nil || title == "" {
+		util.PrintError("Remove Participator Failed! Invalid title .")
+		return
+	}
+
+	participator, err := c.cmd.Flags().GetString("participator")
+	if err != nil || participator == "" {
+		util.PrintError("Remove Participator Failed! Invalid participator .")
+		return
+	}
+
+	err = service.Meeting().RemoveParticipator(title,  strings.Split(participator, "+"))
+	if err == nil{
+		util.PrintSuccess("Remove Participator Success! .")
+	} else if err == service.ErrorMeetingNotExist{
+		util.PrintError("Remove Participator Failed! No such Meeting [" + title + "] .")
+	} else if err == service.ErrorParticipatorExist{
+		util.PrintError("Remove Participator Failed! Some participators aren't in the meeting .")
+	} else if err == service.ErrorNotPresenter {
+		util.PrintError("Remove Participator Failed! You are not the presenter of the meeting .")
+	} else {
+		util.PrintError("Remove Participator Failed!")
+	}
 }
 
 // Query 会议查询
@@ -161,19 +187,29 @@ func (c *ctrlManger) MeetingDelete(){
 
 // MeetingQuit 退出会议
 func (c *ctrlManger) MeetingQuit(){
-	//TODO
+	title, err := c.cmd.Flags().GetString("title")
+	if err != nil || title == "" {
+		util.PrintError("Delete Meeting Failed! Invalid title .")
+		return
+	}
+	// 调用service服务
+	err = service.Meeting().Quit(title)
+	if err == nil {
+		util.PrintSuccess("Quit Meeting [" + title + "] Success!")
+	} else if err == service.ErrorMeetingNotExist {
+		util.PrintError("Quit Meeting Failed! No such Meeting [" + title + "] .")
+	} else if err == service.ErrorParticipatorNotExist {
+		util.PrintError("Quit Meeting Failed! You are not the participator of the meeting .")
+	}
 }
 
 // Clear 清空会议
 func (c *ctrlManger) Clear(){
 	// 调用service服务
-	meetings := model.Meeting().GetMeetingByName(service.Status().GetLoginUser())
-	for _, u := range meetings {
-		err := service.Meeting().Delete(u.Title)
-		if err != nil {
-			util.PrintError("Clear Meeting Failed!")
-			return
-		}
+	err := service.Meeting().Clear()
+	if err != nil {
+		util.PrintError("Clear Meeting Failed!")
+		return
 	}
 	util.PrintSuccess("Clear Meeting Success!")
 }

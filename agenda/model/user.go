@@ -59,3 +59,13 @@ func (m *UserModel) Exist(name string) bool {
 func (m *UserModel) GetAllUsers() []UserData {
 	return m.Data.Users
 }
+
+func (m *UserModel) Delete(user string) error {
+	// 操作数据库
+	for i, u := range m.Data.Users {
+		if u.Name == user {
+			m.Data.Users = append(m.Data.Users[:i],m.Data.Users[i+1:]...)
+		}
+	}
+	return m.save(m.Data)
+}
