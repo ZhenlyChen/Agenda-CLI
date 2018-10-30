@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"os"
 	"regexp"
 
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
@@ -16,6 +17,7 @@ type UserInterface interface {
 	Logout()
 	List()
 	Delete()
+	CheckLogin()
 }
 
 // Register 注册
@@ -122,5 +124,12 @@ func (c *ctrlManger) Delete() {
 		service.Status().ClearStatus()
 	} else{
 		util.PrintError("Delete User Failed!")
+	}
+}
+
+func (c *ctrlManger) CheckLogin(){
+	if service.Status().GetLoginUser() == "" {
+		util.PrintError("You must login first to obtain permission!")
+		os.Exit(0)
 	}
 }

@@ -29,6 +29,9 @@ var logoutCmd  = &cobra.Command{
 	Use:   "logout",
 	Aliases: []string{"exit", "quit"},
 	Short: "Log out",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
 	Run:   wrapper(controller.User().Logout),
 }
 
@@ -45,8 +48,11 @@ var listCmd = &cobra.Command{
 }
 
 var DeleteCmd = &cobra.Command{
-	Use: "list",
-	Short: "List all users",
+	Use: "delete",
+	Short: "delete users",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
 	Run: wrapper(controller.User().Delete),
 }
 

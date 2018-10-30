@@ -8,6 +8,9 @@ import (
 var meetingCmd = &cobra.Command{
 	Use: "meeting",
 	Aliases: []string{"m"},
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
 	Short: "Meeting Command",
 }
 
