@@ -89,7 +89,7 @@ func (c *ctrlManger) AddParticipator(){
 	if err == nil{
 		util.PrintSuccess("Add Participator Success! .")
 	} else if err == service.ErrorMeetingNotExist{
-		util.PrintError("Add Participator Failed! Not such Meeting [" + title + "] .")
+		util.PrintError("Add Participator Failed! No such Meeting [" + title + "] .")
 	} else if err == service.ErrorParticipatorExist{
 		util.PrintError("Add Participator Failed! Some participators already exist .")
 	} else if err == service.ErrorNotPresenter {
@@ -143,7 +143,20 @@ func (c *ctrlManger) Query(){
 
 // MeetingDelete 删除会议
 func (c *ctrlManger) MeetingDelete(){
-	//TODO
+	title, err := c.cmd.Flags().GetString("title")
+	if err != nil || title == "" {
+		util.PrintError("Delete Meeting Failed! Invalid title .")
+		return
+	}
+	// 调用service服务
+	err = service.Meeting().Delete(title)
+	if err == nil {
+		util.PrintSuccess("Delete Meeting [" + title + "] Success!")
+	} else if err == service.ErrorMeetingNotExist {
+		util.PrintError("Delete Meeting Failed! No such Meeting [" + title + "] .")
+	} else if err == service.ErrorNotPresenter {
+		util.PrintError("Delete Meeting Failed! You are not the presenter of the meeting .")
+	}
 }
 
 // MeetingQuit 退出会议
@@ -151,7 +164,16 @@ func (c *ctrlManger) MeetingQuit(){
 	//TODO
 }
 
-// Clear 删除会议
+// Clear 清空会议
 func (c *ctrlManger) Clear(){
-	//TODO
+	// 调用service服务
+	meetings := model.Meeting().GetMeetingByName(service.Status().GetLoginUser())
+	for _, u := range meetings {
+		err := service.Meeting().Delete(u.Title)
+		if err != nil {
+			util.PrintError("Clear Meeting Failed!")
+			return
+		}
+	}
+	util.PrintSuccess("Clear Meeting Success!")
 }

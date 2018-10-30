@@ -10,6 +10,7 @@ type MeetingInterface interface {
 	Create(data model.MeetingData, start string, end string)(string, error)
 	AddParticipator(title string, participator []string) error
 	Query(username string,start string, end string) ([]model.MeetingData, error)
+	Delete(title string) error
 }
 
 var(
@@ -71,7 +72,7 @@ func (s *service) Create(data model.MeetingData, start string, end string) (stri
 
 // 添加参与者
 func (s *service) AddParticipator(title string, participator []string) error{
-	// 检测目标会议是否存在
+	// 检测目标会议是否存在并获取
 	meeting, err := s.meetingModel.GetMeetingByTitle(title)
 	if err != nil {
 		return ErrorMeetingNotExist
@@ -110,4 +111,17 @@ func (s *service) Query(username string, start string, end string) ([]model.Meet
 	data := s.meetingModel.Query(username, startTime, endTime)
 
 	return data, nil
+}
+
+// 通过会议标题删除会议
+func (s *service) Delete(title string) error {
+	// 检测会议是否存在
+	if !model.Meeting().Exist(title) {
+		return ErrorMeetingNotExist
+	}
+	// 检测是否为拥有着
+	if !model.Meeting().IsPresenter(title, Status().GetLoginUser()) {
+		return ErrorNotPresenter
+	}
+	return model.Meeting().Delete(title)
 }

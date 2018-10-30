@@ -49,7 +49,7 @@ var meetingQuit = &cobra.Command{
 }
 
 var meetingClear = &cobra.Command{
-	Use: "add",
+	Use: "clear",
 	Short: "Add participator",
 	Run: wrapper(controller.Meeting().Clear),
 }
@@ -72,4 +72,9 @@ func init() {
 	meetingQuery.Flags().StringP("start","s","","Query start time")
 	meetingQuery.Flags().StringP("end","e","","Query end time")
 	meetingCmd.AddCommand(meetingQuery)
+	// 删除会议
+	meetingDelete.Flags().StringP("title","t","","Meeting's title")
+	meetingCmd.AddCommand(meetingDelete)
+	// 清空会议
+	meetingCmd.AddCommand(meetingClear)
 }

@@ -1,6 +1,8 @@
 package model
 
-import "errors"
+import (
+	"errors"
+)
 
 // MeetingModel 会议数据对象
 type MeetingModel struct {
@@ -82,6 +84,17 @@ func (m *MeetingModel) GetMeetingByName(name string) []MeetingData {
 	return data
 }
 
+// 获得自己发起的会议
+func (m *MeetingModel) GetMeetingAsPresenter(name string) []MeetingData {
+	var data []MeetingData
+	for _, u := range m.Data.Meetings {
+		if u.Presenter == name{
+			data = append(data, u)
+		}
+	}
+	return data
+}
+
 // 添加参与者
 func(m *MeetingModel) AddParticipator(title string, participator []string) error {
 	for i, u := range m.Data.Meetings {
@@ -92,4 +105,21 @@ func(m *MeetingModel) AddParticipator(title string, participator []string) error
 		}
 	}
 	return m.save(m.Data)
+}
+
+// 是否为会议拥有者
+func (m *MeetingModel)IsPresenter(title string, user string) bool {
+	meeting, _ := m.GetMeetingByTitle(title)
+	return meeting.Presenter == user
+}
+
+// 删除会议
+func (m *MeetingModel) Delete(title string) error {
+	for i, u := range m.Data.Meetings {
+		if u.Title == title {
+			m.Data.Meetings = append(m.Data.Meetings[:i],m.Data.Meetings[i+1:]...)
+			return m.save(m.Data)
+		}
+	}
+	return nil
 }
