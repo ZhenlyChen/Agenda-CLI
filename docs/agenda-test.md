@@ -2,11 +2,11 @@
 
 Agenda测试文档
 
-`Service`和`Model`模块使用`go test`配合`ci`进行全自动的测试
-
 
 
 `Command`模块将使用命令进行手动测试
+
+`Service`和`Model`模块使用`go test`配合`ci`进行全自动的测试
 
 
 
@@ -241,3 +241,182 @@ $ agenda help
 ```bash
 $ agenda version
 ```
+
+
+
+
+
+## Go test
+
+`Service`和`Model`模块使用`go test`配合`ci`进行全自动的测试
+
+### service_test.go
+
+- 用户正常注册
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 使用非法用户名注册
+
+  - test function： `TestUserRegister_normal`
+
+  - 所测试的方法：`User().Register()`
+
+- 使用重复用户名注册
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 用户正常登录
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 不输入用户名登录
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 登录密码不正确
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 获取当前登录状态
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 清空登录状态
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 会议正常创建
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 使用非法时间创建会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 会议开始时间晚于结束时间
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 使用重复名称创建会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 会议参与者不存在于用户列表中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 会议发起者同时存在于参与者列表中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 会议时间冲突
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 正常添加会议参与者
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将添加的参与者不在用户列表中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 执行添加操作的不是会议发起者
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将添加的参与者已存在于当前参与者中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将添加的参与者存在时间冲突
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将移除的参与者不在用户列表中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将移除的参与者不在参与者列表中
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 正常移除参与者
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 查询会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将删除的会议不存在
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 执行删除会议的不是会议发起者
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 正常删除会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 将退出的会议不存在
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 退出会议的操作者不是会议的参与者
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 正常退出会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+- 正常清除会议
+
+  - test function： `TestUserRegister_normal`
+  - 所测试的方法：`User().Register()`
+
+
+
+### model_test.go
+
+
+
+
+
+
+
+
+
