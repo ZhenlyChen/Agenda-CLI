@@ -21,6 +21,9 @@ type ctrlManger struct {
 // User 用户控制层
 func User() UserInterface { return ctrl }
 
+// Meeting 会议控制层
+func Meeting() MeetingInterface {return ctrl}
+
 // Other 其他控制层
 func Other() OtherInterface {return ctrl}
 
