@@ -88,6 +88,11 @@ func (s *service) AddParticipator(title string, participator []string) error{
 	if !exist {
 		return ErrorMeetingNotExist
 	}
+	for _, p := range participator {
+		if !s.userModel.Exist(p) {
+			return ErrorUserNotExist
+		}
+	}
 	meeting := s.meetingModel.GetMeetingByTitle(title)
 	// 检测当前用户是否是会议的拥有者
 	if meeting.Presenter != Status().GetLoginUser() {
@@ -117,6 +122,11 @@ func (s *service) RemoveParticipator(title string, participator []string) error{
 	exist := model.Meeting().Exist(title)
 	if !exist {
 		return ErrorMeetingNotExist
+	}
+	for _, p := range participator {
+		if !s.userModel.Exist(p) {
+			return ErrorUserNotExist
+		}
 	}
 	meeting := s.meetingModel.GetMeetingByTitle(title)
 	// 检测是否是会议的拥有者
