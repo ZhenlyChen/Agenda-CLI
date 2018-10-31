@@ -80,3 +80,13 @@ func (m *Model) initModel(filePath string, dataModel interface{}) error {
 	}
 	return nil
 }
+
+//Used for testing  --ctp
+func ClearModel(){
+	User().Data.Users = []UserData{}
+	User().save(User().Data)
+	Status().Data =  StatusData{}
+	Status().save(Status().Data )
+	Meeting().Data.Meetings = []MeetingData{}
+	Meeting().save(Meeting().Data)
+}
