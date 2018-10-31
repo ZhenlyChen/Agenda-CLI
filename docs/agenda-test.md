@@ -14,23 +14,32 @@ Agenda测试文档
 
 ### 用户
 
-#### 用户状态
+#### 用户注册
 
-命令： `status`
+命令：`user register`/`u register`
 
-参数：无
+参数：
 
-功能：查看当前已登录的用户
+- `user`：用户名，唯一，只允许使用26个字母和数字以及`-`和`_`的组合
+- `password`：密码，密码使用`Hash`加`Salt`的方法保存在数据库
+- `email`：可选，用户邮箱
+- `tel`：可选，用户电话
 
-测试：
+功能：用户注册，判断用户名是否唯一，然后将用户信息存储到数据库
+
+测试：注册4个用户test、test1、test2和test3 
 
 ```bash
-Agenda-CLI status # 显示未登录状态
-Agenda-CLI user register -uTest -p123456
-Agenda-CLI login -uTest -p123456
-Agenda-CLI status # 显示当前登陆用户名
-Agenda-CLI logout
-Agenda-CLI status # 显示未登录状态
+Agenda-CLI user register -utest -p123
+Register Success! Hi, test
+Agenda-CLI user register -utest1 -p123
+Register Success! Hi, test1
+Agenda-CLI user register -utest2 -p123
+Register Success! Hi, test2
+Agenda-CLI user register -utest3 -p123
+Register Success! Hi, test3
+Agenda-CLI user register -utest1 -p123
+Register Failed! The user name already exists. # 注册失败，用户已存在
 ```
 
 #### 用户登陆
@@ -47,12 +56,29 @@ Agenda-CLI status # 显示未登录状态
 测试：
 
 ```bash
-Agenda-CLI login --user=Admin --password=123456 # 未注册用户，登陆失败
-Agenda-CLI user register --user=Admin --password=123456
-Agenda-CLI login --user=Admin  # 参数不全，登陆失败
-Agenda-CLI login --password=123456  # 参数不全，登陆失败
-Agenda-CLI login --user=Admin --password=123 # 密码错误， 登陆失败
-Agenda-CLI login --user=Admin --password=123456 # 登陆成功
+Agenda-CLI login -utest4 -p123 
+Login Failed! Incorrect username or password. #登录失败，用户不存在
+Agenda-CLI login -utest -p123
+Login Success! Hello, test.
+```
+
+#### 用户状态
+
+命令： `status`
+
+参数：无
+
+功能：查看当前已登录的用户
+
+测试：
+
+```
+Agenda-CLI stauts
+No logged in users.
+Agenda-CLI login -utest -p123
+Login Success! Hello, test.
+Agenda-CLI stauts
+Current user: test.
 ```
 
 #### 用户登出
@@ -64,28 +90,14 @@ Agenda-CLI login --user=Admin --password=123456 # 登陆成功
 功能：退出登陆，清理当前登陆状态
 
 ```bash
-Agenda-CLI user register --user=Mega --password=123456
-Agenda-CLI login --user=Mega --password=123456
-Agenda-CLI status # 显示当前登陆账户
-Agenda-CLI logout # 退出登陆
-Agenda-CLI status # 显示未登录状态
-```
-
-#### 用户注册
-
-命令：`user register`/`u register`
-
-参数：
-
-- `user`：用户名，唯一，只允许使用26个字母和数字以及`-`和`_`的组合
-- `password`：密码，密码使用`Hash`加`Salt`的方法保存在数据库
-- `email`：可选，用户邮箱
-- `tel`：可选，用户电话
-
-功能：用户注册，判断用户名是否唯一，然后将用户信息存储到数据库
-
-```bash
-$ agenda user register --user=Admin --password=123456 [--email=a@zhenly.cn] [--tel=18888888888]
+Agenda-CLI login -utest -p123
+Login Success! Hello, test.
+Agenda-CLI stauts
+Current user: test.
+Agenda-CLI logout 
+sign out.
+Agenda-CLI stauts
+No logged in users.
 ```
 
 #### 用户查询
@@ -97,7 +109,17 @@ $ agenda user register --user=Admin --password=123456 [--email=a@zhenly.cn] [--t
 功能：列出当前已注册的所有用户的用户名、邮箱及电话信息
 
 ```bash
-$ agenda user list
+Agenda-CLI stauts
+No logged in users.
+Agenda-CLI user list
+You must login first to obtain permission! # 未登录无法获取
+Agenda-CLI login -utest -p123
+Login Success! Hello, test.
+Agenda-CLI user list
+Username: test    Email:     Tel: 
+Username: test1    Email:     Tel: 
+Username: test2    Email:     Tel: 
+Username: test3    Email:     Tel: 
 ```
 
 #### 用户删除
@@ -109,7 +131,16 @@ $ agenda user list
 功能：删除当前账户，清理登陆状态，移除相关的会议参与信息，并且删除无效会议
 
 ```bash
-$ agenda user delete
+Agenda-CLI stauts
+Current user: test.
+Agenda-CLI user delete
+Delete User Success! 
+Agenda-CLI login -utest1 -p123
+Login Success! Hello, test1.
+Agenda-CLI user list
+Username: test1    Email:     Tel: 
+Username: test2    Email:     Tel: 
+Username: test3    Email:     Tel: 
 ```
 
 ### 会议
@@ -128,7 +159,10 @@ $ agenda user delete
 功能：创建会议，检查参与者的合法性以及可行性，并且写入数据库
 
 ```bash
-$ agenda meeting create --title=Hello --participart=zhen+chen+tp --start=2018/10/13-13:33 --end=2018/10/13-14:44
+Agenda-CLI login -utest1 -p123
+Login Success! Hello, test1.
+Agenda-CLI meeting create -tm1 -ptest2 -s1111/11/11-11:11 -e1111/11/11-12:11
+Create Meeting [m1] Success!
 ```
 
 #### 增加会议参与者
@@ -143,7 +177,10 @@ $ agenda meeting create --title=Hello --participart=zhen+chen+tp --start=2018/10
 功能：增加会议参与者，检测合法性和可行性
 
 ```bash
-$ agenda meeting add --participator=tp+sq --title=test
+Agenda-CLI meeting add -tm1 -ptest3
+Add Participator Success!
+Agenda-CLI meeting add -tm1 -ptest5
+Add Participator Failed! Some Participators are not user . # 不存在该用户
 ```
 
 #### 移除会议参与者
@@ -158,7 +195,8 @@ $ agenda meeting add --participator=tp+sq --title=test
 功能：移除会议参与者，检测移除后的会议合法性
 
 ```bash
-$ agenda meeting remove --participator=tp+sq --title=test
+Agenda-CLI meeting remove -tm1 -ptest3
+Remove Participator Success!
 ```
 
 #### 查询会议
@@ -173,7 +211,11 @@ $ agenda meeting remove --participator=tp+sq --title=test
 功能：查询指定时间段与自己有关的（作为主持者或者参与者）的会议
 
 ```bash
-$ agenda meeting query --start=2018/10/13-13:33 --end=2018/10/13-14:44
+Agenda-CLI meeting query -s=1111/11/11-11:11 -e=1111/11/11-12:11
+Query Meeting Success!
+Meeting1:
+Title: m1    Start: 1111-11-11 19:11:00 +0800 CST    End: 1111-11-11 20:11:00 +0800 CST
+Participator: test2
 ```
 
 #### 取消会议
@@ -187,7 +229,10 @@ $ agenda meeting query --start=2018/10/13-13:33 --end=2018/10/13-14:44
 功能：取消指定标题的会议（自己发起的）
 
 ```bash
-$ agenda meeting delete hello
+Agenda-CLI meeting delete -tm1
+Delete Meeting [m1] Success!
+Agenda-CLI meeting query -s=1111/11/11-11:11 -e=1111/11/11-12:11
+Query Meeting Success! #已删除，无会议
 ```
 
 #### 退出会议
@@ -201,7 +246,20 @@ $ agenda meeting delete hello
 功能：退出指定标题的会议（自己参与的）
 
 ```bash
-$ agenda meeting quit hello
+Agenda-CLI meeting create -tm1 -ptest2 -s1111/11/11-11:11 -e1111/11/11-12:11
+Create Meeting [m1] Success!
+Agenda-CLI logout
+sign out.
+Agenda-CLI login -utest2 -p123 
+Login Success! Hello, test2.
+Agenda-CLI meeting quit -tm1
+Quit Meeting [m1] Success!
+Agenda-CLI logout
+sign out.
+login -utest1 -p123
+Login Success! Hello, test1.
+meeting query -s=1111/11/11-11:11 -e=1111/11/11-12:11
+Query Meeting Success! #无会议显示，退出后参与者为0，被删除
 ```
 
 #### 清空会议
@@ -212,8 +270,13 @@ $ agenda meeting quit hello
 
 功能：清空自己发起的所有会议安排
 
-```v
-$ agenda meeting clear
+```bash
+Agenda-CLI meeting create -tm1 -ptest2 -s1111/11/11-11:11 -e1111/11/11-12:11
+Create Meeting [m1] Success!
+Agenda-CLI meeting clear
+Clear Meeting Success!
+meeting query -s=1111/11/11-11:11 -e=1111/11/11-12:11
+Query Meeting Success!
 ```
 
 ### 其他

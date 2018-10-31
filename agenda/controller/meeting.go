@@ -52,7 +52,7 @@ func (c *ctrlManger) Create(){
 				Participator: strings.Split(participator, "+"),
 			}, start, end)
 	if err == nil{
-		util.PrintSuccess("Create Meeting [" + title + "] Success! .")
+		util.PrintSuccess("Create Meeting [" + title + "] Success!")
 	} else if err == service.ErrorTimeOutOfRange{
 		util.PrintError("Create Meeting Failed! Start or End time out of range .")
 	} else if err == service.ErrorTimeEndTimeEarly{
@@ -89,13 +89,15 @@ func (c *ctrlManger) AddParticipator(){
 	// 调用service服务
 	err = service.Meeting().AddParticipator(title,  strings.Split(participator, "+"))
 	if err == nil{
-		util.PrintSuccess("Add Participator Success! .")
+		util.PrintSuccess("Add Participator Success!")
 	} else if err == service.ErrorMeetingNotExist{
 		util.PrintError("Add Participator Failed! No such Meeting [" + title + "] .")
 	} else if err == service.ErrorParticipatorExist{
 		util.PrintError("Add Participator Failed! Some participators already exist .")
 	} else if err == service.ErrorNotPresenter {
 		util.PrintError("Add Participator Failed! You are not the presenter of the meeting .")
+	} else if err == service.ErrorUserNotExist {
+		util.PrintError("Add Participator Failed! Some Participators are not user .")
 	} else {
 		util.PrintError("Add Participator Failed!")
 	}
@@ -118,13 +120,15 @@ func (c *ctrlManger) RemoveParticipator(){
 
 	err = service.Meeting().RemoveParticipator(title,  strings.Split(participator, "+"))
 	if err == nil{
-		util.PrintSuccess("Remove Participator Success! .")
+		util.PrintSuccess("Remove Participator Success!")
 	} else if err == service.ErrorMeetingNotExist{
 		util.PrintError("Remove Participator Failed! No such Meeting [" + title + "] .")
 	} else if err == service.ErrorParticipatorExist{
 		util.PrintError("Remove Participator Failed! Some participators aren't in the meeting .")
 	} else if err == service.ErrorNotPresenter {
 		util.PrintError("Remove Participator Failed! You are not the presenter of the meeting .")
+	} else if err == service.ErrorUserNotExist {
+		util.PrintError("Add Participator Failed! Some Participators are not user .")
 	} else {
 		util.PrintError("Remove Participator Failed!")
 	}
