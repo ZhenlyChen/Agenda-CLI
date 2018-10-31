@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"os"
 	"regexp"
 
 	"github.com/ZhenlyChen/Agenda-CLI/agenda/model"
@@ -16,6 +17,7 @@ type UserInterface interface {
 	Logout()
 	List()
 	Delete()
+	CheckLogin()
 }
 
 // Register 注册
@@ -34,10 +36,10 @@ func (c *ctrlManger) Register() {
 	}
 
 	email, _ := c.cmd.Flags().GetString("email")
-	if email != "" && !regexp.MustCompile("^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,8})$").Match([]byte(email)) {
-		util.PrintError("Register Failed! Invalid email.")
-		return
-	}
+	//if email != "" && !regexp.MustCompile("^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,8})$").Match([]byte(email)) {
+	//	util.PrintError("Register Failed! Invalid email.")
+	//	return
+	//}
 
 	tel, _ := c.cmd.Flags().GetString("tel")
 	if tel != "" && !regexp.MustCompile("^[0-9-+]{3,18}$").Match([]byte(tel)) {
@@ -107,10 +109,27 @@ func (c *ctrlManger) Logout() {
 
 // List 列出所有用户
 func (c *ctrlManger) List() {
-	// TODO
+	users := model.User().GetAllUsers()
+	spilt := "    "
+	for _, u := range users{
+		util.PrintInfo("Username: " + u.Name + spilt + "Email: " + u.Email + spilt + "Tel: " + u.Tel)
+	}
 }
 
 // Delete 删除当前账户
 func (c *ctrlManger) Delete() {
-	// TODO
+	err := service.User().UserDelete()
+	if err == nil {
+		util.PrintError("Delete User Success!")
+		service.Status().ClearStatus()
+	} else{
+		util.PrintError("Delete User Failed!")
+	}
+}
+
+func (c *ctrlManger) CheckLogin(){
+	if service.Status().GetLoginUser() == "" {
+		util.PrintError("You must login first to obtain permission!")
+		os.Exit(0)
+	}
 }

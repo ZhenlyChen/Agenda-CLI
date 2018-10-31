@@ -21,7 +21,7 @@ var registerCmd = &cobra.Command{
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "register a user",
+	Short: "User log in",
 	Run:   wrapper(controller.User().Login),
 }
 
@@ -29,6 +29,9 @@ var logoutCmd  = &cobra.Command{
 	Use:   "logout",
 	Aliases: []string{"exit", "quit"},
 	Short: "Log out",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
 	Run:   wrapper(controller.User().Logout),
 }
 
@@ -36,6 +39,21 @@ var statusCmd = &cobra.Command{
 	Use: "status",
 	Short: "View the currently logged in user",
 	Run: wrapper(controller.User().Status),
+}
+
+var listCmd = &cobra.Command{
+	Use: "list",
+	Short: "List all users",
+	Run: wrapper(controller.User().List),
+}
+
+var DeleteCmd = &cobra.Command{
+	Use: "delete",
+	Short: "delete users",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
+	Run: wrapper(controller.User().Delete),
 }
 
 func init() {
@@ -55,4 +73,8 @@ func init() {
 	registerCmd.Flags().StringP("email", "e", "", "user email")
 	registerCmd.Flags().StringP("tel", "t", "", "user telephone")
 	userCmd.AddCommand(registerCmd)
+	// 查询命令
+	userCmd.AddCommand(listCmd)
+	// 删除命令
+	userCmd.AddCommand(DeleteCmd)
 }

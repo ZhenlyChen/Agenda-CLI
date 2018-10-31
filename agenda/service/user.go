@@ -11,6 +11,7 @@ import (
 type UserInterface interface {
 	Register(data model.UserData) error
 	Login(user, password string) error
+	UserDelete() error
 }
 
 var(
@@ -51,4 +52,20 @@ func (s *service) Login(user, password string) error {
 	// 设置登陆状态
 	s.SetStatus(u.Name)
 	return nil
+}
+
+// Delete 删除
+func (s *service) UserDelete() error {
+	// 删除自己发起的会议
+	s.Clear()
+	// 退出参与的会议
+	meetings := s.meetingModel.GetMeetingAsParticipator(Status().GetLoginUser())
+	for _, meeting := range meetings {
+		err := s.Quit(meeting.Title)
+		if err != nil {
+			return err
+		}
+	}
+	// 用户删除
+	return s.userModel.Delete(Status().GetLoginUser())
 }

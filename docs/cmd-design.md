@@ -253,32 +253,34 @@ $ agenda meeting create --title=Hello --participart=zhen+chen+tp --start=2018/10
 
 #### 增加会议参与者
 
-命令：`meeting add [participator]`/ `m add [participator]`
+命令：`meeting add `/ `m add `
 
 参数：
 
-- `participator`：Path参数，新增的参与者
+- `participator`：新增的参与者
+- `title`：会议标题
 
 功能：增加会议参与者，检测合法性和可行性
 
 ```bash
-$ agenda meeting add tp+sq
+$ agenda meeting add --participator=tp+sq --title=test
 ```
 
 
 
 #### 移除会议参与者
 
-命令：`meeting remove [participator]`/ `m remove [participator]`
+命令：`meeting remove `/ `m remove `
 
 参数：
 
-- `participator`：Path参数，需要移除的参与者
+- `participator`：需要移除的参与者
+- `title`：会议标题
 
 功能：移除会议参与者，检测移除后的会议合法性
 
 ```bash
-$ agenda meeting remove tp+sq
+$ agenda meeting remove --participator=tp+sq --title=test
 ```
 
 
