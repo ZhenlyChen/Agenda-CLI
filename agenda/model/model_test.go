@@ -148,7 +148,7 @@ func TestMeetingIsPresenter(t *testing.T) {
 	}
 }
 
-func TestMeetingIsPresenterGetMeetingByTitle(t *testing.T) {
+func TestMeetingGetMeetingByTitle(t *testing.T) {
 	data := Meeting().GetMeetingByTitle("Meeting1")
 	if data.Title == "Meeting1"{
 		t.Log("Get meeting by name success")

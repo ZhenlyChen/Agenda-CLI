@@ -106,6 +106,7 @@ func TestMeetingCreate(t *testing.T) {
 	User().Register(model.UserData{Name: "test3", Password: "123",})
 	User().Register(model.UserData{Name: "test4", Password: "123",})
 	User().Register(model.UserData{Name: "test5", Password: "123",})
+	User().Register(model.UserData{Name: "test6", Password: "123",})
 	Status().ClearStatus()
 	User().Login("test1", "321")
 
