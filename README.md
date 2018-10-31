@@ -1,6 +1,6 @@
 # Agenda-CLI
 
-![travis-ci](https://travis-ci.com/ZhenlyChen/Agenda-CLI.svg?branch=master) ![coverage](https://coveralls.io/repos/github/ZhenlyChen/Agenda-CLI/badge.svg?branch=master)
+[![Build Status](https://travis-ci.com/ZhenlyChen/Agenda-CLI.svg?branch=master)](https://travis-ci.com/ZhenlyChen/Agenda-CLI) [![Coverage Status](https://coveralls.io/repos/github/ZhenlyChen/Agenda-CLI/badge.svg?branch=master)](https://coveralls.io/github/ZhenlyChen/Agenda-CLI?branch=master)
 
 Agenda Management System
 
@@ -23,4 +23,3 @@ $ go install github.com/ZhenlyChen/Agenda-CLI
 ```bash
 $ Agenda-CLI help
 ```
-
