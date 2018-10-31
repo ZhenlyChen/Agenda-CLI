@@ -315,6 +315,8 @@ $ agenda version
 
 ### service_test.go
 
+测试流程：
+
 - 用户正常注册
 
   - test function： `TestUserRegister_normal`
@@ -322,160 +324,216 @@ $ agenda version
 
 - 使用非法用户名注册
 
-  - test function： `TestUserRegister_normal`
+  - test function： `TestUserRegister_IllegalName`
 
   - 所测试的方法：`User().Register()`
 
 - 使用重复用户名注册
 
-  - test function： `TestUserRegister_normal`
+  - test function： `TestUserRegister_DuplicateName`
   - 所测试的方法：`User().Register()`
 
 - 用户正常登录
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestUserLogin_normal`
+  - 所测试的方法：`User().Login()`
 
 - 不输入用户名登录
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestUserLogin_NullUser`
+  - 所测试的方法：`User().Login()`
 
 - 登录密码不正确
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestUserLogin_ErrorPassword`
+  - 所测试的方法：`User().Login()`
 
 - 获取当前登录状态
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestStatusGetLoginUser`
+  - 所测试的方法：`Status().GetLoginUser()`
 
 - 清空登录状态
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestStatusClearStatus`
+  - 所测试的方法：`Status().ClearStatus()`
 
 - 会议正常创建
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate`
+  - 所测试的方法：`Meeting().Create()`
 
 - 使用非法时间创建会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_TimeOutOfRange`
+  - 所测试的方法：`Meeting().Create()`
 
 - 会议开始时间晚于结束时间
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_EndTimeEarly`
+  - 所测试的方法：`Meeting().Create()`
 
 - 使用重复名称创建会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_DuplicateTitle`
+  - 所测试的方法：`Meeting().Create()`
 
 - 会议参与者不存在于用户列表中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_UserNotExist`
+  - 所测试的方法：`Meeting().Create()`
 
 - 会议发起者同时存在于参与者列表中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_BothPresenterAndParticipator`
+  - 所测试的方法：`Meeting().Create()`
 
 - 会议时间冲突
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingCreate_Overlap`
+  - 所测试的方法：`Meeting().Create()`
 
 - 正常添加会议参与者
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingAddParticipator`
+  - 所测试的方法：`Meeting().AddParticipator()`
 
 - 将添加的参与者不在用户列表中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingAddParticipator_NotExist`
+  - 所测试的方法：`Meeting().AddParticipator()`
 
 - 执行添加操作的不是会议发起者
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingAddParticipator_NotPresenter`
+  - 所测试的方法：`Meeting().AddParticipator()`
 
 - 将添加的参与者已存在于当前参与者中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingAddParticipator_ParticipatorExist`
+  - 所测试的方法：`Meeting().AddParticipator()`
 
 - 将添加的参与者存在时间冲突
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingAddParticipator_Overlap`
+  - 所测试的方法：`Meeting().AddParticipator()`
 
 - 将移除的参与者不在用户列表中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingRemoveParticipator_NotExist`
+  - 所测试的方法：`Meeting().RemoveParticipator`
 
+- 执行移除操作的不是会议发起者
 - 将移除的参与者不在参与者列表中
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingRemoveParticipator_ParticipatorNotExist`
+  - 所测试的方法：`Meeting().RemoveParticipator()`
 
 - 正常移除参与者
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingRemoveParticipator`
+  - 所测试的方法：`Meeting().RemoveParticipator()`
 
 - 查询会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingQuery`
+  - 所测试的方法：`Meeting().Query()`
 
 - 将删除的会议不存在
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingDelete_NotExist`
+  - 所测试的方法：`Meeting().Delete()`
 
 - 执行删除会议的不是会议发起者
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingDelete_NotPresenter`
+  - 所测试的方法：`Meeting().Delete()`
 
 - 正常删除会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingDelete`
+  - 所测试的方法：`Meeting().Delete()`
 
 - 将退出的会议不存在
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingQuit_NotExist`
+  - 所测试的方法：`Meeting().Quit()`
 
 - 退出会议的操作者不是会议的参与者
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingQuit_ParticipatorNotExist`
+  - 所测试的方法：`Meeting().Quit()`
 
 - 正常退出会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingQuit`
+  - 所测试的方法：`Meeting().Quit()`
 
 - 正常清除会议
 
-  - test function： `TestUserRegister_normal`
-  - 所测试的方法：`User().Register()`
+  - test function： `TestMeetingClear`
+  - 所测试的方法：`Meeting().Clear()`
 
 
 
 ### model_test.go
 
+测试流程：
 
+- 添加用户
+  - test function： `TestUserAdd`
+  - 所测试的方法：`User().Add()`
+- 根据用户名获取用户
+  - test function： `TestUserGetByName`
+  - 所测试的方法：`User().GetByName()`
+- 检测用户是否存在
+  - test function： `TestUserExist`
+  - 所测试的方法：`User().Exist()`
+- 设置当前用户登录状态
+  - test function： `TestStatusSetUser`
+  - 所测试的方法：`Status().SetUser()`
+- 更新登录有效时间
+  - test function： `TestRefreshTime`
+  - 所测试的方法：`Status().RefreshTime()`
+- 清除当前登录状态
+  - test function： `TestClearStatus`
+  - 所测试的方法：`Status().ClearStatus()`
+- 添加会议
+  - test function： `TestMeetingAdd`
+  - 所测试的方法：`Meeting().Add()`
+- 检测会议是否存在
+  - test function： `TestMeetingExist`
+  - 所测试的方法：`Meeting().Exist()`
+- 查询会议
+  - test function： `TestMeetingQuery`
+  - 所测试的方法：`Meeting().Query()`
+- 添加参与者
+  - test function： `TestMeetingAddParticipator`
+  - 所测试的方法：`Meeting().AddParticipator()`
+- 检测某用户是否是会议参与者
+  - test function： `TestMeetingIsParticipator`
+  - 所测试的方法：`Meeting().IsParticipator()`
+- 检测某用户是否是会议发起者
+  - test function： `TestMeetingIsPresenter`
+  - 所测试的方法：`Meeting().IsPresenter()`
+- 根据会议名获取会议
+  - test function： `TestMeetingGetMeetingByTitle`
+  - 所测试的方法：`Meeting().GetMeetingByTitle()`
+- 获取作为发起者的所有会议
+  - test function： `TestMeetingGetMeetingAsPresenter`
+  - 所测试的方法：`Meeting().GetMeetingAsPresenter()`
+- 获取作为参与者的所有会议
+  - test function： `TestMeetingGetMeetingAsParticipator`
+  - 所测试的方法：`Meeting().GetMeetingAsParticipator()`
+- 获取作为发起或参与者的所有会议
+  - test function： `TestMeetingGetMeetingByName`
+  - 所测试的方法：`Meeting().GetMeetingByName()`
+- 移除参与者
+  - test function： `TestMeetingRemoveParticipator`
+  - 所测试的方法：`Meeting().RemoveParticipator()`
+- 删除会议
+  - test function： `TestMeetingDelete`
+  - 所测试的方法：`Meeting().Delete()`
 
 
 
