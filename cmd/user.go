@@ -7,16 +7,16 @@ import (
 
 // registerCmd represents the register command
 var userCmd = &cobra.Command{
-	Use: "user",
+	Use:     "user",
 	Aliases: []string{"u"},
-	Short: "User Command",
+	Short:   "User Command",
 }
 
 var registerCmd = &cobra.Command{
-	Use:   "register",
+	Use:     "register",
 	Aliases: []string{"r"},
-	Short: "register a user",
-	Run:   wrapper(controller.User().Register),
+	Short:   "register a user",
+	Run:     wrapper(controller.User().Register),
 }
 
 var loginCmd = &cobra.Command{
@@ -25,30 +25,33 @@ var loginCmd = &cobra.Command{
 	Run:   wrapper(controller.User().Login),
 }
 
-var logoutCmd  = &cobra.Command{
-	Use:   "logout",
+var logoutCmd = &cobra.Command{
+	Use:     "logout",
 	Aliases: []string{"exit", "quit"},
-	Short: "Log out",
+	Short:   "Log out",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		controller.User().CheckLogin()
 	},
-	Run:   wrapper(controller.User().Logout),
+	Run: wrapper(controller.User().Logout),
 }
 
 var statusCmd = &cobra.Command{
-	Use: "status",
+	Use:   "status",
 	Short: "View the currently logged in user",
-	Run: wrapper(controller.User().Status),
+	Run:   wrapper(controller.User().Status),
 }
 
 var listCmd = &cobra.Command{
-	Use: "list",
+	Use:   "list",
 	Short: "List all users",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		controller.User().CheckLogin()
+	},
 	Run: wrapper(controller.User().List),
 }
 
-var DeleteCmd = &cobra.Command{
-	Use: "delete",
+var deleteCmd = &cobra.Command{
+	Use:   "delete",
 	Short: "delete users",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		controller.User().CheckLogin()
@@ -76,5 +79,5 @@ func init() {
 	// 查询命令
 	userCmd.AddCommand(listCmd)
 	// 删除命令
-	userCmd.AddCommand(DeleteCmd)
+	userCmd.AddCommand(deleteCmd)
 }
